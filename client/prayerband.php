@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     <title>Prayer Band - Lighthouse Ministers</title>
     
     <!-- Stylesheets & Fonts -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles/style.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Nunito+Sans:wght@200..1000&family=Roboto:wght@100..900&display=swap" rel="stylesheet">
