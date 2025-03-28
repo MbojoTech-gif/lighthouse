@@ -1,6 +1,7 @@
 <?php
 session_start();
-include 'db.php'; // Database connection
+include '../backend/db.php';  // Go up one level from 'client' and then access 'backend/db.php'
+
 
 // Handle User Registration
 if (isset($_POST['signup'])) {
