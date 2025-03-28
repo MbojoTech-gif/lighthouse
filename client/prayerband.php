@@ -1,7 +1,8 @@
 <?php
 session_start();
 include 'db.php'; // Ensure you have a database connection file
-
+include '../backend/db.php';  // Go up one level from 'client' and then access 'backend/db.php'
+include '../backend/auth.php'; // Go up one level from 'client' and then access 'backend/auth.php'
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];

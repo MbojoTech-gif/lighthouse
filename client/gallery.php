@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+include '../backend/db.php';  // Go up one level from 'client' and then access 'backend/db.php'
+include '../backend/auth.php'; // Go up one level from 'client' and then access 'backend/auth.php'
 
 ?>
 
