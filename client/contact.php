@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,15 +19,16 @@
         <section class="sub-header">
             <nav>
                 <a href="index.html"><img src="src/logo.png"></a>
-                <p><b>LIGHTHOUSE MINISTERS NRB</b></p>
+                <p><b><button>LIGHTHOUSE MINISTERS NRB</button></b></p>
                 <div class="nav-links" id="navLinks">
                     <i class="fa fa-times" onclick="hideMenu()"></i>
                     <ul>
-                        <li><a href="index.html">HOME</a></li>
-                        <li><a href="about.html">ABOUT</a></li>
-                        <li><a href="gallery.html">GALLERY</a></li>
-                        <li><a href="events.html">EVENTS</a></li>
-                        <li><a href="contact.html">CONTACT</a></li>
+                    <li><a href="index.php">HOME</a></li>
+                        <li><a href="about.php">ABOUT</a></li>
+                        <li><a href="gallery.php">GALLERY</a></li>
+                        <li><a href="events.php">EVENTS</a></li>
+                        <li><a href="contact.php">CONTACT</a></li>
+                        <li><button><a href="login.php" class="login-btn">Login</a></button></li>
                     </ul>
                 </div>
                 <i class="fa fa-bars" onclick="showMenu()"></i>
@@ -75,44 +82,58 @@
 
         </section>
         <hr size="10">
-         <!---footer-->
-         <section class="footer">
-            <h4>About Us</h4>
-            <p>The Lighthouse Ministers is a vibrant music group affiliated with Jetview SDA Church in Utawala,Nairobi,Kenya.<br>
-            As part of the Seventh-day Adventist Church we share the message of hope and faith through inspiring and uplifting music.<br>
-        Join us as we worship, celebrate and spread positivity through music and evangelism,creating an atmosphere of unity and spiritual growth.<br>
-    </p>
-    <div class="icons">
-        <a href="https://www.youtube.com/redirect?event=channel_description&redir_token=QUFFLUhqa2xNbWpfbG0zYWdfUTNGYlE0MGxmU085QzNrZ3xBQ3Jtc0ttbU9RQmdMQXRfVHR4MWQ3TVNjZXIyS21CSUtLZXN4WFQ4ZTF5eGNORHA0NkQ1RHBZSzdhRUxjNXFid29Nb1V6MVdkbmtxTi1IbVp2eVZHR00zZTNWODBKTGlhZGdEWUN2MjRoWG1fdlEwM045STd1SQ&q=https%3A%2F%2Fwww.facebook.com%2Fthelighthouseministers%2F">
-        <i class="fa fa-facebook"></i>
-        </a>
-
-        <a href="https://www.youtube.com/@lighthouseministersnrb">
-        <i class="fa fa-youtube"></i>
-        </a>
-
-        <a href="https://open.spotify.com/artist/44qEM1HcSZo2BhEbqVWaWf?si=B8pLIvOASdSm7KPM_a6xrg">
-        <i class="fa fa-spotify"></i>
-        </a>
-        
-        <a href="https://www.instagram.com/lighthouseministers_official?igsh=MWp2Mnl2YWd2M3RuMw==">
-        <i class="fa fa-instagram"></i>
-        </a>
-        
-    </div>
-    <p>Made with <i class="fa fa-heart"></i></i> by mbojotech </p>
-         </section>
-<!--------javascript for toggle menu---->
-        <script>
-
-            var navLinks = document.getElementById("navLinks");
-
-            function showMenu(){
-                navLinks.style.right="0";
-            }
-            function hideMenu(){
-                navLinks.style.right="-200px";
-            }
-        </script>
+          <!--------------footer section------------>
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Navigation Links -->
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                <li><a href="index.php">HOME</a></li>
+                        <li><a href="about.php">ABOUT</a></li>
+                        <li><a href="gallery.php">GALLERY</a></li>
+                        <li><a href="events.php">EVENTS</a></li>
+                        <li><a href="contact.php">CONTACT</a></li>
+                </ul>
+            </div>
+    
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                <li><a href="donate.php">Donate</a></li>
+                    <li><a href="#">Sermons</a></li>
+                    <li><a href="#">Ministries</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+    
+            <!-- Join Us Section -->
+            <div class="footer-section join-us">
+                <h4>Join Us</h4>
+                <p>Become a part of Lighthouse Ministers today!</p>
+                <a href="join.php" class="join-btn">Join Now</a>
+            </div>
+    
+            <!-- Social Media -->
+            <div class="footer-section social">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-youtube"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Copyright -->
+        <div class="footer-bottom">
+            <p>&copy; 2024 Lighthouse Ministers. All Rights Reserved.</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
     </body>
 </html>
