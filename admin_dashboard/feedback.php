@@ -1,6 +1,7 @@
 <?php
 // feedback.php - Admin Feedback Management
 session_start();
+include 'sidebar.php';
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
     exit();

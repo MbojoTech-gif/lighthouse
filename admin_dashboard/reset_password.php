@@ -1,6 +1,7 @@
 <?php
 // reset_password.php - Handle password reset
 include 'db.php';
+include 'sidebar.php';
 
 if (isset($_GET['token'])) {
     $token = $_GET['token'];

@@ -1,6 +1,7 @@
 <?php
 // dashboard.php - Admin Dashboard with Advanced Analytics
 session_start();
+include 'sidebar.php';
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
     exit();
@@ -67,103 +68,231 @@ while ($row = $popular_songs->fetch_assoc()) {
 }
 
 // Fetch event attendance trends
-$event_attendance = $conn->query("SELECT events.title, COUNT(event_registrations.id) AS attendees FROM events LEFT JOIN event_registrations ON events.id = event_registrations.event_id GROUP BY events.id ORDER BY attendees DESC LIMIT 5");
+$event_attendance = $conn->query("SELECT events.event_name, COUNT(event_registrations.user_id) AS attendees
+        FROM events
+        JOIN event_registrations ON events.id = event_registrations.event_id
+        GROUP BY events.event_name");
 $event_titles = [];
 $event_attendees = [];
 while ($row = $event_attendance->fetch_assoc()) {
-    $event_titles[] = $row['title'];
+    $event_titles[] = $row['event_name'];
     $event_attendees[] = $row['attendees'];
 }
 
 // Fetch recent applications
-$recent_apps = $conn->query("SELECT name, email, submitted_at FROM applications ORDER BY submitted_at DESC LIMIT 5");
+$recent_apps = $conn->query("SELECT users.first_name, users.last_name, users.email 
+FROM users");
+
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lighthouse Ministers</title>
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Basic layout styling */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+       
+
+        /* Content Area */
+        .content {
+            margin-left: 200px;
+            padding: 10px;
+            width: calc(100% - 500px);
+            transition: margin-left 0.3s ease;
+        }
+         /* Sidebar */
+ .sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    margin: 5px 0;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color:rgb(177, 7, 7);
+}
+
+        /* Charts */
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .chart-box {
+            flex: 2 1 40%;
+            min-width: 200px;
+            height: 250px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0px 4px 6px rgb(0, 0, 0);
+            padding: 10px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 90%;
+            }
+
+            .charts-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .chart-box {
+                width: 100%;
+                max-width: 100%;
+                height: 200px;
+            }
+        }
+
+        /* Recent Applications */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+
+    </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <h2>Admin Dashboard</h2>
-        
-        <canvas id="dashboardChart" width="400" height="200"></canvas>
-        <canvas id="applicationsChart" width="400" height="200"></canvas>
-        <canvas id="activeUsersChart" width="400" height="200"></canvas>
-        <canvas id="activityHoursChart" width="400" height="200"></canvas>
-        <canvas id="popularSongsChart" width="400" height="200"></canvas>
-        <canvas id="eventAttendanceChart" width="400" height="200"></canvas>
-        
-        <script>
-            new Chart(document.getElementById('dashboardChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: ['Songs', 'Events', 'Gallery', 'Applications', 'Users'],
-                    datasets: [{
-                        label: 'Total Count',
-                        data: [<?php echo "$songs_count, $events_count, $gallery_count, $applications_count, $users_count"; ?>],
-                        backgroundColor: ['red', 'blue', 'green', 'orange', 'purple']
-                    }]
-                }
-            });
-            
-            new Chart(document.getElementById('applicationsChart').getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels: <?php echo json_encode($months); ?>,
-                    datasets: [{
-                        label: 'Applications Per Month',
-                        data: <?php echo json_encode($app_counts); ?>,
-                        borderColor: 'blue',
-                        fill: false
-                    }]
-                }
-            });
-            
-            new Chart(document.getElementById('popularSongsChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: <?php echo json_encode($song_titles); ?>,
-                    datasets: [{
-                        label: 'Most Popular Songs',
-                        data: <?php echo json_encode($song_counts); ?>,
-                        backgroundColor: 'green'
-                    }]
-                }
-            });
-            
-            new Chart(document.getElementById('eventAttendanceChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: <?php echo json_encode($event_titles); ?>,
-                    datasets: [{
-                        label: 'Event Attendance',
-                        data: <?php echo json_encode($event_attendees); ?>,
-                        backgroundColor: 'orange'
-                    }]
-                }
-            });
-        </script>
-        
-        <h3>Recent Applications</h3>
+
+
+    <div class="content">
+        <h2>Dashboard Overview</h2>
+                <!-- Recent Applications -->
+                <h3>Recent Applications</h3>
         <ul>
             <?php while ($app = $recent_apps->fetch_assoc()): ?>
-                <li><?php echo $app['name'] . " - " . $app['email'] . " (" . $app['submitted_at'] . ")"; ?></li>
+                <li><?php echo $app['first_name'] . " " . $app['last_name'] . " - " . $app['email']; ?></li>
             <?php endwhile; ?>
         </ul>
-        
-        <h3>Quick Links</h3>
-        <ul>
-            <li><a href="music.php">Manage Music</a></li>
-            <li><a href="events.php">Manage Events</a></li>
-            <li><a href="gallery.php">Manage Gallery</a></li>
-            <li><a href="applications.php">Manage Applications</a></li>
-            <li><a href="users.php">Manage Users</a></li>
-            <li><a href="settings.php">Settings</a></li>
-        </ul>
+
+        <!-- Charts Container -->
+        <div class="charts-container">
+            <div class="chart-box">
+                <canvas id="dashboardChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="applicationsChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="activeUsersChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="activityHoursChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="popularSongsChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <canvas id="eventAttendanceChart"></canvas>
+            </div>
+        </div>
+
+
     </div>
+
+    <script>
+
+        // Chart for Dashboard Total Counts
+        new Chart(document.getElementById('dashboardChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Songs', 'Events', 'Gallery', 'Applications', 'Users'],
+                datasets: [{
+                    label: 'Total Count',
+                    data: [<?php echo "$songs_count, $events_count, $gallery_count, $applications_count, $users_count"; ?>],
+                    backgroundColor: ['#e74c3c', '#3498db', '#2ecc71', '#f39c12', '#9b59b6']
+                }]
+            }
+        });
+
+        // Chart for Applications Per Month
+        new Chart(document.getElementById('applicationsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: <?php echo json_encode($months); ?>,
+                datasets: [{
+                    label: 'Applications Per Month',
+                    data: <?php echo json_encode($app_counts); ?>,
+                    borderColor: '#3498db',
+                    fill: false
+                }]
+            }
+        });
+
+        // Chart for Most Popular Songs
+        new Chart(document.getElementById('popularSongsChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($song_titles); ?>,
+                datasets: [{
+                    label: 'Most Popular Songs',
+                    data: <?php echo json_encode($song_counts); ?>,
+                    backgroundColor: '#2ecc71'
+                }]
+            }
+        });
+
+        // Chart for Event Attendance
+        new Chart(document.getElementById('eventAttendanceChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($event_titles); ?>,
+                datasets: [{
+                    label: 'Event Attendance',
+                    data: <?php echo json_encode($event_attendees); ?>,
+                    backgroundColor: '#f39c12'
+                }]
+            }
+        });
+    </script>
 </body>
 </html>

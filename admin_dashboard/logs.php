@@ -6,6 +6,7 @@ if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'super_admin') {
     exit();
 }
 include 'db.php';
+include 'sidebar.php';
 
 $result = $conn->query("SELECT logs.id, users.name AS admin_name, logs.action, logs.timestamp FROM logs JOIN users ON logs.admin_id = users.id ORDER BY logs.timestamp DESC");
 ?>

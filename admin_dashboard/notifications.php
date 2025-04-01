@@ -6,6 +6,7 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 include 'db.php';
+include 'sidebar.php';
 
 // Define role-based access restrictions
 $role = $_SESSION['role'];

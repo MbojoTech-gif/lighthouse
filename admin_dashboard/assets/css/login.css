@@ -1,0 +1,106 @@
+/* Admin Login Page Styles */
+
+:root {
+    --primary-color: #1a1a2e; /* Dark Navy */
+    --secondary-color: #16213e; /* Deep Blue */
+    --accent-color: #e94560; /* Vibrant Red */
+    --text-color: #ffffff;
+    --input-bg: #1b1b3a;
+    --button-bg: #e94560;
+    --button-hover: #ff2e63;
+    --shadow: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background: var(--primary-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px var(--shadow);
+    text-align: center;
+    width: 350px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: var(--accent-color);
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: #cccccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: var(--button-bg);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--button-hover);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 400px) {
+    .login-container {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+   /* Style for the password field with the eye icon inside */
+   .password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 15px; /* Space for the eye icon */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.password-container .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+}
+
+.password-container .eye-icon:hover {
+    color: #333;
+}

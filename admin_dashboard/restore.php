@@ -1,6 +1,7 @@
 <?php
 // restore.php - Database Restore
 session_start();
+include 'sidebar.php';
 if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'super_admin') {
     header("Location: dashboard.php");
     exit();

@@ -1,0 +1,175 @@
+/* General Body and Layout Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Sidebar styling (if any) */
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    margin: 5px 0;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: rgb(177, 7, 7);
+}
+
+/* Content Styling */
+.music-container {
+    margin-left: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgb(83, 1, 1);
+    width: calc(100% - 540px);
+    margin-top: 20px;
+}
+
+.music-container h2 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.music-container h3 {
+    color: #34495e;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+form input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80%;
+}
+
+form input[type="file"] {
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+form button {
+    padding: 12px;
+    background: linear-gradient(45deg, #1403a5, #4ac502);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #27ae60;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0px 4px 6px rgb(0, 0, 0);
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background: linear-gradient(45deg, #1403a5, #4ac502);
+    color: white;
+    font-size: 16px;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+table td a:hover {
+    color: #2980b9;
+}
+
+/* Audio Controls */
+audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Edit Music Form Styling */
+.edit-music-form {
+    margin-top: 30px;
+    border-top: 2px solid #ddd;
+    padding-top: 20px;
+}
+
+.edit-music-form input[type="text"] {
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .music-container {
+        margin-left: 20px;
+        width: 83%;
+        padding: 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+
+    form input[type="text"], form input[type="file"], form button {
+        width: 90%;
+    }
+
+    table th, table td {
+        padding: 10px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+}

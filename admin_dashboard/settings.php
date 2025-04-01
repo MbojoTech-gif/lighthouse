@@ -6,6 +6,7 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 include 'db.php';
+include 'sidebar.php';
 
 // Fetch current settings
 $settings_query = $conn->query("SELECT * FROM settings LIMIT 1");

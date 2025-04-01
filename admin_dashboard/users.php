@@ -1,6 +1,7 @@
 <?php
 // users.php - Manage Admin Users with Email Password Reset
 session_start();
+include 'sidebar.php';
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
     exit();

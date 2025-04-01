@@ -1,6 +1,7 @@
 <?php
 // user_roles.php - Admin User Roles & Permissions
 session_start();
+include 'sidebar.php';
 if (!isset($_SESSION['admin_id']) || $_SESSION['role'] != 'super_admin') {
     header("Location: index.php");
     exit();
