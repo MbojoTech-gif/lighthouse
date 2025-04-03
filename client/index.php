@@ -18,8 +18,8 @@ session_start();
 
         <section class="header">
             <nav>
-                <a href="index.html"><img src="src/logo.png"></a>
-                <p><b><button>LIGHTHOUSE MINISTERS NRB</button></b></p>
+                <img src="src/logo.png">
+                <h6><b>LIGHTHOUSE MINISTERS NRB</b></h6>
                 <div class="nav-links" id="navLinks">
                     <i class="fa fa-times" onclick="hideMenu()"></i>
                     <ul>
@@ -28,14 +28,15 @@ session_start();
                         <li><a href="gallery.php">GALLERY</a></li>
                         <li><a href="events.php">EVENTS</a></li>
                         <li><a href="contact.php">CONTACT</a></li>
-                        <li><button><a href="login.php" class="login-btn">Login</a></button></li>
+                        
                     </ul>
                 </div>
                 <i class="fa fa-bars" onclick="showMenu()"></i>
             </nav>
             <div class="container">
-                <h1>The Lighthouse Ministers</h1>
-                <p>We share the message of hope and faith through inspiring and uplifting music.</p>
+                <h1>Inspiring hope and faith through<br>uplifting music.</h1>
+                <p>Welcome to The Lighthouse Ministers,a Seventh-day Adventist singing group<br>
+                dedicated to spreading the message of salvation through soul-stirring melodies.</p>
                 <a href="https://www.youtube.com/@lighthouseministersnrb" class="hero-btn">Visit Us To Know More</a>
             </div>
 
@@ -87,7 +88,7 @@ session_start();
                     Through prayer, we strengthen our faith, seek divine intervention, and bring spiritual 
                     revival to those in need.
                 </p>
-                <a href="prayerband.php" class="ministry-btn">Join Us in Prayer</a>
+                <a href="contact.php" class="ministry-btn">Join Us in Prayer</a>
             </div>
             <div class="ministry-image">
                 <img src="src/prayer.jpg" alt="Prayer Band">
@@ -103,7 +104,7 @@ session_start();
                     Through scripture reading, discussions, and reflections, we grow spiritually and 
                     strengthen our faith in Christ.
                 </p>
-                <a href="contact.html" class="ministry-btn">Join Our Study</a>
+                <a href="contact.php" class="ministry-btn">Join Our Study</a>
             </div>
             <div class="ministry-image">
                 <img src="src/bible.jpg" alt="Bible Study Group">
@@ -155,10 +156,10 @@ session_start();
             <div class="footer-section social">
                 <h4>Follow Us</h4>
                 <div class="social-links">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-youtube"></i></a>
-                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="https://facebook.com/thelighthouseministers"><i class="fa fa-facebook"></i></a>
+                    <a href="https://whatsapp.com/channel/0029Vb71PAX4IBhDlXIXzv2y"><i class="fa fa-whatsapp"></i></a>
+                    <a href="https://www.youtube.com/@thelighthouseministersnairobi"><i class="fa fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/lighthouseministers_official?igsh=MWp2Mnl2YWd2M3RuMw=="><i class="fa fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -166,7 +167,7 @@ session_start();
         <!-- Copyright -->
         <div class="footer-bottom">
             <p>&copy; 2024 Lighthouse Ministers. All Rights Reserved.</p>
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+            <p><a href="privacy-policy.php">Privacy Policy</a> | <a href="terms-of-use.php">Terms of Use</a></p>
         </div>
     </footer>
     <script src="script.js"></script>

@@ -141,11 +141,12 @@ FROM users");
 
         /* Charts */
         .charts-container {
-            display: flex;
+            display: block;
             flex-wrap: wrap;
-            gap: 20px;
             justify-content: space-between;
             margin-bottom: 30px;
+            width: 50%;
+            text-align: center;
         }
 
         .chart-box {
@@ -178,6 +179,7 @@ FROM users");
             .charts-container {
                 flex-direction: column;
                 gap: 15px;
+                width: 100%;
             }
 
             .chart-box {
@@ -219,21 +221,6 @@ FROM users");
             <div class="chart-box">
                 <canvas id="dashboardChart"></canvas>
             </div>
-            <div class="chart-box">
-                <canvas id="applicationsChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="activeUsersChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="activityHoursChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="popularSongsChart"></canvas>
-            </div>
-            <div class="chart-box">
-                <canvas id="eventAttendanceChart"></canvas>
-            </div>
         </div>
 
 
@@ -254,45 +241,6 @@ FROM users");
             }
         });
 
-        // Chart for Applications Per Month
-        new Chart(document.getElementById('applicationsChart').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: <?php echo json_encode($months); ?>,
-                datasets: [{
-                    label: 'Applications Per Month',
-                    data: <?php echo json_encode($app_counts); ?>,
-                    borderColor: '#3498db',
-                    fill: false
-                }]
-            }
-        });
-
-        // Chart for Most Popular Songs
-        new Chart(document.getElementById('popularSongsChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode($song_titles); ?>,
-                datasets: [{
-                    label: 'Most Popular Songs',
-                    data: <?php echo json_encode($song_counts); ?>,
-                    backgroundColor: '#2ecc71'
-                }]
-            }
-        });
-
-        // Chart for Event Attendance
-        new Chart(document.getElementById('eventAttendanceChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode($event_titles); ?>,
-                datasets: [{
-                    label: 'Event Attendance',
-                    data: <?php echo json_encode($event_attendees); ?>,
-                    backgroundColor: '#f39c12'
-                }]
-            }
-        });
     </script>
 </body>
 </html>

@@ -7,6 +7,9 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 include 'db.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 
 // Define role-based access restrictions
 $role = $_SESSION['role'];
@@ -26,6 +29,8 @@ if (!in_array($page, $permissions[$role])) {
 
 // Handle file upload
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['gallery_file'])) {
+    $caption = $_POST['caption'];
+    $event_id = $_POST['event_id'];  // Event ID can be entered by admin
     $file = $_FILES['gallery_file'];
     
     $upload_dir = 'uploads/gallery/';
@@ -34,10 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['gallery_file'])) {
     $file_path = $upload_dir . basename($file['name']);
     
     if (move_uploaded_file($file['tmp_name'], $file_path)) {
-        $stmt = $conn->prepare("INSERT INTO gallery (file_path) VALUES (?)");
-        $stmt->bind_param("s", $file_path);
+        $stmt = $conn->prepare("INSERT INTO gallery (event_id, image_url, caption) VALUES (?, ?, ?)");
+        $stmt->bind_param("iss", $event_id, $file_path, $caption);
         $stmt->execute();
         $stmt->close();
+        echo "Image uploaded successfully!";
     } else {
         echo "Error uploading file.";
     }
@@ -46,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['gallery_file'])) {
 // Handle file deletion
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    $stmt = $conn->prepare("SELECT file_path FROM gallery WHERE id = ?");
+    $stmt = $conn->prepare("SELECT image_url FROM gallery WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->bind_result($file_path);
@@ -78,15 +84,18 @@ $gallery_list = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
     <div class="gallery-container">
         <h2>Manage Gallery</h2>
         <form method="POST" enctype="multipart/form-data">
+            <input type="number" name="event_id" placeholder="Enter Event ID" required><br>
+            <input type="text" name="caption" placeholder="Enter Caption" required><br>
             <input type="file" name="gallery_file" accept="image/*,video/*" required><br>
             <button type="submit">Upload</button>
         </form>
+        
         <h3>Gallery</h3>
         <div class="gallery-grid">
             <?php while ($row = $gallery_list->fetch_assoc()): ?>
                 <div class="gallery-item">
                     <?php 
-                    $file_path = $row['file_path'];
+                    $file_path = $row['image_url'];
                     $file_ext = pathinfo($file_path, PATHINFO_EXTENSION);
                     if (in_array($file_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
                         echo "<img src='$file_path' width='150'>";
@@ -94,6 +103,7 @@ $gallery_list = $conn->query("SELECT * FROM gallery ORDER BY id DESC");
                         echo "<video width='150' controls><source src='$file_path' type='video/mp4'></video>";
                     }
                     ?>
+                    <p><?php echo $row['caption']; ?></p>
                     <a href="gallery.php?delete=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure?');">Delete</a>
                 </div>
             <?php endwhile; ?>

@@ -1,8 +1,8 @@
 <?php
 $host = "127.0.0.1"; // Use IP instead of "localhost"
 $user = "root";
-$password = "Mbojo@2021"; // Replace with the correct password
-$database = "lighthouse_ministers";
+$password = ""; // Replace with the correct password
+$database = "lhm_nrb";
 $port = 3306; // Specify the correct port
 
 // Create connection

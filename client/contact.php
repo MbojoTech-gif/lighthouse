@@ -18,8 +18,8 @@ session_start();
     <body>
         <section class="sub-header">
             <nav>
-                <a href="index.html"><img src="src/logo.png"></a>
-                <p><b><button>LIGHTHOUSE MINISTERS NRB</button></b></p>
+            <img src="src/logo.png">
+                <h6><b>LIGHTHOUSE MINISTERS NRB</b></h6>
                 <div class="nav-links" id="navLinks">
                     <i class="fa fa-times" onclick="hideMenu()"></i>
                     <ul>
@@ -28,7 +28,7 @@ session_start();
                         <li><a href="gallery.php">GALLERY</a></li>
                         <li><a href="events.php">EVENTS</a></li>
                         <li><a href="contact.php">CONTACT</a></li>
-                        <li><button><a href="login.php" class="login-btn">Login</a></button></li>
+                        
                     </ul>
                 </div>
                 <i class="fa fa-bars" onclick="showMenu()"></i>
@@ -131,7 +131,7 @@ session_start();
         <!-- Copyright -->
         <div class="footer-bottom">
             <p>&copy; 2024 Lighthouse Ministers. All Rights Reserved.</p>
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
+            <p><a href="privacy-policy.php">Privacy Policy</a> | <a href="terms-of-use.php">Terms of Use</a></p>
         </div>
     </footer>
     <script src="script.js"></script>
