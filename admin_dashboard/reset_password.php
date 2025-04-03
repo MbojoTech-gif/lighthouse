@@ -1,7 +1,7 @@
 <?php
 // reset_password.php - Handle password reset
 include 'db.php';
-include 'sidebar.php';
+
 
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
@@ -29,6 +29,20 @@ if (isset($_GET['token'])) {
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
+
+
+<div class="sidebar">
+    <h2>Lighthouse Ministers</h2>
+    <a href="dashboard.php">Dashboard</a>
+<a href="music.php">Manage Music</a>
+<a href="events.php">Manage Events</a>
+<a href="gallery.php">Manage Gallery</a>
+<a href="applications.php">Manage Applications</a>
+<a href="users.php">Manage Users</a>
+<a href="logout.php">Logout</a>
+
+</div>
+
     <div class="reset-container">
         <h2>Reset Your Password</h2>
         <form method="POST">

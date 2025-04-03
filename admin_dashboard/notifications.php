@@ -6,7 +6,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 include 'db.php';
-include 'sidebar.php';
 
 // Define role-based access restrictions
 $role = $_SESSION['role'];
@@ -42,6 +41,20 @@ if (isset($_POST['mark_read'])) {
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
+
+
+<div class="sidebar">
+    <h2>Lighthouse Ministers</h2>
+    <a href="dashboard.php">Dashboard</a>
+<a href="music.php">Manage Music</a>
+<a href="events.php">Manage Events</a>
+<a href="gallery.php">Manage Gallery</a>
+<a href="applications.php">Manage Applications</a>
+<a href="users.php">Manage Users</a>
+<a href="logout.php">Logout</a>
+
+</div>
+
     <div class="dashboard-container">
         <h2>Notifications</h2>
         <form method="POST">

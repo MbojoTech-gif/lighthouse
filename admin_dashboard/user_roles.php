@@ -1,7 +1,6 @@
 <?php
 // user_roles.php - Admin User Roles & Permissions
 session_start();
-include 'sidebar.php';
 if (!isset($_SESSION['admin_id']) || $_SESSION['role'] != 'super_admin') {
     header("Location: index.php");
     exit();
@@ -28,6 +27,20 @@ if (isset($_POST['update_role'])) {
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
+
+
+<div class="sidebar">
+    <h2>Lighthouse Ministers</h2>
+    <a href="dashboard.php">Dashboard</a>
+<a href="music.php">Manage Music</a>
+<a href="events.php">Manage Events</a>
+<a href="gallery.php">Manage Gallery</a>
+<a href="applications.php">Manage Applications</a>
+<a href="users.php">Manage Users</a>
+<a href="logout.php">Logout</a>
+
+</div>
+
     <div class="dashboard-container">
         <h2>Manage User Roles</h2>
         <table>

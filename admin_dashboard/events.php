@@ -1,7 +1,6 @@
 <?php
 // events.php - Manage Events
 session_start();
-include 'sidebar.php';
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
     exit();
@@ -57,6 +56,20 @@ $event_list = $conn->query("SELECT * FROM events ORDER BY event_date ASC");
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
+
+<div class="sidebar">
+    <h2>Lighthouse Ministers</h2>
+    <a href="dashboard.php">Dashboard</a>
+<a href="music.php">Manage Music</a>
+<a href="events.php">Manage Events</a>
+<a href="gallery.php">Manage Gallery</a>
+<a href="applications.php">Manage Applications</a>
+<a href="users.php">Manage Users</a>
+<a href="logout.php">Logout</a>
+
+</div>
+
+
     <div class="events-container">
         <h2>Manage Events</h2>
         <form method="POST">

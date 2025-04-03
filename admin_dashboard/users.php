@@ -1,7 +1,6 @@
 <?php
 // users.php - Manage Admin Users with Email Password Reset
 session_start();
-include 'sidebar.php';
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
     exit();
@@ -80,6 +79,20 @@ $user_list = $conn->query("SELECT * FROM users ORDER BY id DESC");
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
+
+
+<div class="sidebar">
+    <h2>Lighthouse Ministers</h2>
+    <a href="dashboard.php">Dashboard</a>
+<a href="music.php">Manage Music</a>
+<a href="events.php">Manage Events</a>
+<a href="gallery.php">Manage Gallery</a>
+<a href="applications.php">Manage Applications</a>
+<a href="users.php">Manage Users</a>
+<a href="logout.php">Logout</a>
+
+</div>
+
     <div class="users-container">
         <h2>Manage Admin Users</h2>
         

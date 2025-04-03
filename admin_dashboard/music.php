@@ -2,7 +2,6 @@
 // music.php - Manage Music Uploads
 session_start();
 include 'db.php';
-include 'sidebar.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
@@ -108,6 +107,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['music_file'])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery for AJAX -->
 </head>
 <body>
+
+
+<div class="sidebar">
+    <h2>Lighthouse Ministers</h2>
+    <a href="dashboard.php">Dashboard</a>
+<a href="music.php">Manage Music</a>
+<a href="events.php">Manage Events</a>
+<a href="gallery.php">Manage Gallery</a>
+<a href="applications.php">Manage Applications</a>
+<a href="users.php">Manage Users</a>
+<a href="logout.php">Logout</a>
+
+</div>
+
     <div class="music-container">
         <h2>Manage Music</h2>
 

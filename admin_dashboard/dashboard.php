@@ -1,7 +1,6 @@
 <?php
 // dashboard.php - Admin Dashboard with Advanced Analytics
 session_start();
-include 'sidebar.php';
 if (!isset($_SESSION['admin_id'])) {
     header("Location: index.php");
     exit();
@@ -31,54 +30,6 @@ $gallery_count = $conn->query("SELECT COUNT(*) AS total FROM gallery")->fetch_as
 $applications_count = $conn->query("SELECT COUNT(*) AS total FROM applications")->fetch_assoc()['total'];
 $users_count = $conn->query("SELECT COUNT(*) AS total FROM users")->fetch_assoc()['total'];
 
-// Fetch applications per month
-$applications_per_month = $conn->query("SELECT DATE_FORMAT(submitted_at, '%Y-%m') AS month, COUNT(*) AS total FROM applications GROUP BY month ORDER BY month ASC");
-$months = [];
-$app_counts = [];
-while ($row = $applications_per_month->fetch_assoc()) {
-    $months[] = $row['month'];
-    $app_counts[] = $row['total'];
-}
-
-// Fetch most active users
-$active_users = $conn->query("SELECT users.name, COUNT(applications.id) AS total_apps FROM users JOIN applications ON users.id = applications.user_id GROUP BY users.id ORDER BY total_apps DESC LIMIT 5");
-$user_names = [];
-$user_apps = [];
-while ($row = $active_users->fetch_assoc()) {
-    $user_names[] = $row['name'];
-    $user_apps[] = $row['total_apps'];
-}
-
-// Fetch peak activity hours
-$activity_hours = $conn->query("SELECT HOUR(submitted_at) AS hour, COUNT(*) AS total FROM applications GROUP BY hour ORDER BY hour ASC");
-$hours = [];
-$hour_counts = [];
-while ($row = $activity_hours->fetch_assoc()) {
-    $hours[] = $row['hour'] . ':00';
-    $hour_counts[] = $row['total'];
-}
-
-// Fetch most popular songs
-$popular_songs = $conn->query("SELECT title, play_count FROM music ORDER BY play_count DESC LIMIT 5");
-$song_titles = [];
-$song_counts = [];
-while ($row = $popular_songs->fetch_assoc()) {
-    $song_titles[] = $row['title'];
-    $song_counts[] = $row['play_count'];
-}
-
-// Fetch event attendance trends
-$event_attendance = $conn->query("SELECT events.event_name, COUNT(event_registrations.user_id) AS attendees
-        FROM events
-        JOIN event_registrations ON events.id = event_registrations.event_id
-        GROUP BY events.event_name");
-$event_titles = [];
-$event_attendees = [];
-while ($row = $event_attendance->fetch_assoc()) {
-    $event_titles[] = $row['event_name'];
-    $event_attendees[] = $row['attendees'];
-}
-
 // Fetch recent applications
 $recent_apps = $conn->query("SELECT users.first_name, users.last_name, users.email 
 FROM users");
@@ -102,42 +53,46 @@ FROM users");
             padding: 0;
         }
 
-       
-
         /* Content Area */
         .content {
-            margin-left: 200px;
-            padding: 10px;
-            width: calc(100% - 500px);
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
             transition: margin-left 0.3s ease;
         }
-         /* Sidebar */
- .sidebar {
-    width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    padding: 20px;
-    overflow-y: auto;
-    transition: all 0.3s ease;
-}
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
 
-.sidebar a {
-    display: block;
-    color: white;
-    padding: 12px;
-    text-decoration: none;
-    margin: 5px 0;
-    border-radius: 20px;
-    transition: background-color 0.3s ease;
-}
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 12px;
+            text-decoration: none;
+            margin: 5px 0;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+        }
 
-.sidebar a:hover {
-    background-color:rgb(177, 7, 7);
-}
+        .sidebar a:hover {
+            background-color:rgb(177, 7, 7);
+        }
+
+        /* Active sidebar item */
+        .sidebar a.active {
+            background-color: rgb(10, 120, 255);
+        }
 
         /* Charts */
         .charts-container {
@@ -199,17 +154,28 @@ FROM users");
             padding: 10px;
             border-bottom: 1px solid #ddd;
         }
-
-
     </style>
 </head>
 <body>
 
+<div class="sidebar">
+    <h2>Lighthouse Ministers</h2>
+    <a href="dashboard.php">Dashboard</a>
+<a href="music.php">Manage Music</a>
+<a href="events.php">Manage Events</a>
+<a href="gallery.php">Manage Gallery</a>
+<a href="applications.php">Manage Applications</a>
+<a href="users.php">Manage Users</a>
+<a href="logout.php">Logout</a>
 
+</div>
+
+    <!-- Content Area -->
     <div class="content">
         <h2>Dashboard Overview</h2>
-                <!-- Recent Applications -->
-                <h3>Recent Applications</h3>
+        
+        <!-- Recent Applications -->
+        <h3>Recent Applications</h3>
         <ul>
             <?php while ($app = $recent_apps->fetch_assoc()): ?>
                 <li><?php echo $app['first_name'] . " " . $app['last_name'] . " - " . $app['email']; ?></li>
@@ -223,11 +189,10 @@ FROM users");
             </div>
         </div>
 
-
     </div>
 
+    <!-- Chart.js Script -->
     <script>
-
         // Chart for Dashboard Total Counts
         new Chart(document.getElementById('dashboardChart').getContext('2d'), {
             type: 'bar',
@@ -240,7 +205,6 @@ FROM users");
                 }]
             }
         });
-
     </script>
 </body>
 </html>
