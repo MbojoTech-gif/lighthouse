@@ -1,95 +1,100 @@
 <?php
 session_start();
+include 'db.php'; // Include the database connection
+
+// Query to fetch all events from the database
+$query = "SELECT * FROM events ORDER BY event_date DESC"; // You can order by the event date to show recent events first
+$result = $conn->query($query);
 
 ?>
 
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lighthouse Ministers</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/b29579297b.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <section class="sub-header">
-            <nav>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/b29579297b.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <section class="sub-header">
+        <nav>
             <img src="src/logo.png">
-                <h6><b>LIGHTHOUSE MINISTERS NRB</b></h6>
-                <div class="nav-links" id="navLinks">
-                    <i class="fa fa-times" onclick="hideMenu()"></i>
-                    <ul>
+            <h6><b>LIGHTHOUSE MINISTERS NRB</b></h6>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <ul>
                     <li><a href="index.php">HOME</a></li>
-                        <li><a href="about.php">ABOUT</a></li>
-                        <li><a href="gallery.php">GALLERY</a></li>
-                        <li><a href="events.php">EVENTS</a></li>
-                        <li><a href="contact.php">CONTACT</a></li>
-                        
-                    </ul>
-                </div>
-                <i class="fa fa-bars" onclick="showMenu()"></i>
-            </nav>
-            <h1>Events</h1>
-        </section>
-        
-    
-        <!----------Upcoming Events-->
-        <section class="event">
-            <h1>Our Events</h1>
-            <div class="row">
-                <div class="event-col">
-                    <img src="src/eve1.jpg">
-                </div>
+                    <li><a href="about.php">ABOUT</a></li>
+                    <li><a href="gallery.php">GALLERY</a></li>
+                    <li><a href="events.php">EVENTS</a></li>
+                    <li><a href="contact.php">CONTACT</a></li>
+                </ul>
             </div>
-            <br>
-            <h1>Missions</h1>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+        <h1>Events</h1>
+    </section>
+
+    <!-- Upcoming Events Section -->
+    <section class="event">
+
+        <?php if ($result->num_rows > 0): ?>
+            <!-- Loop through all events and display them -->
             <div class="row">
-                <div class="event-col">
-                    <img src="src/ap1.jpg">
-                </div>
-                <div class="event-col">
-                    <img src="src/eve2.jpg">
-                </div>
+                <?php while ($event = $result->fetch_assoc()): ?>
+                    <div class="event-col">
+                        <!-- Update the image path to the correct folder -->
+                        <img src="src/<?php echo htmlspecialchars($event['event_image']); ?>" alt="<?php echo htmlspecialchars($event['event_name']); ?>">
+                        <h3><?php echo htmlspecialchars($event['event_name']); ?></h3>
+                        <p><strong>Event Date:</strong> <?php echo htmlspecialchars($event['event_date']); ?></p>
+                        <p><strong>Location:</strong> <?php echo htmlspecialchars($event['location']); ?></p>
+                        <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($event['description'])); ?></p>
+                    </div>
+                <?php endwhile; ?>
             </div>
-        </section>
-       
-          <!--------------footer section------------>
+        <?php else: ?>
+            <p>No upcoming events at the moment. Please check back later!</p>
+        <?php endif; ?>
+    </section>
+
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="footer-container">
             <!-- Navigation Links -->
             <div class="footer-section">
                 <h4>Navigation</h4>
                 <ul>
-                <li><a href="index.php">HOME</a></li>
-                        <li><a href="about.php">ABOUT</a></li>
-                        <li><a href="gallery.php">GALLERY</a></li>
-                        <li><a href="events.php">EVENTS</a></li>
-                        <li><a href="contact.php">CONTACT</a></li>
+                    <li><a href="index.php">HOME</a></li>
+                    <li><a href="about.php">ABOUT</a></li>
+                    <li><a href="gallery.php">GALLERY</a></li>
+                    <li><a href="events.php">EVENTS</a></li>
+                    <li><a href="contact.php">CONTACT</a></li>
                 </ul>
             </div>
-    
+
             <!-- Quick Links -->
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                <li><a href="donate.php">Donate</a></li>
+                    <li><a href="donate.php">Donate</a></li>
                     <li><a href="#">Sermons</a></li>
                     <li><a href="#">Ministries</a></li>
                     <li><a href="#">Testimonials</a></li>
                     <li><a href="#">FAQs</a></li>
                 </ul>
             </div>
-    
+
             <!-- Join Us Section -->
             <div class="footer-section join-us">
                 <h4>Join Us</h4>
                 <p>Become a part of Lighthouse Ministers today!</p>
                 <a href="join.php" class="join-btn">Join Now</a>
             </div>
-    
+
             <!-- Social Media -->
             <div class="footer-section social">
                 <h4>Follow Us</h4>
@@ -101,13 +106,14 @@ session_start();
                 </div>
             </div>
         </div>
-    
+
         <!-- Copyright -->
         <div class="footer-bottom">
             <p>&copy; 2024 Lighthouse Ministers. All Rights Reserved.</p>
             <p><a href="privacy-policy.php">Privacy Policy</a> | <a href="terms-of-use.php">Terms of Use</a></p>
         </div>
     </footer>
+    
     <script src="script.js"></script>
-    </body>
+</body>
 </html>
