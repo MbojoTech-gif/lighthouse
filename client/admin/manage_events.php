@@ -45,8 +45,8 @@ if (isset($_GET['delete'])) {
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            box-shadow: 0 4px 6px rgb(0, 0, 0);
+            border-radius: 20px;
         }
 
         h2 {

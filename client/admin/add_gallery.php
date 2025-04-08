@@ -8,62 +8,49 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
+// Handle the form submission for adding a new photo
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
-    $event_name = $_POST['event_name'];
-    $event_date = $_POST['event_date'];
-    $location = $_POST['location'];
     $description = $_POST['description'];
+    $section = $_POST['section'];
 
-    // Handle image upload
-    if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] == 0) {
-        $image_name = $_FILES['event_image']['name'];
-        $image_tmp_name = $_FILES['event_image']['tmp_name'];
-        $image_size = $_FILES['event_image']['size'];
+    // Handle the image upload
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $image_name = $_FILES['image']['name'];
+        $image_tmp_name = $_FILES['image']['tmp_name'];
+        $image_size = $_FILES['image']['size'];
         $image_extension = pathinfo($image_name, PATHINFO_EXTENSION);
 
-        // Set allowed image types (you can add more types if needed)
+        // Set allowed image types
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
 
         if (in_array(strtolower($image_extension), $allowed_extensions)) {
             // Define the upload directory (use relative path)
-            $upload_dir = "C:/xampp/htdocs/TLHM/client/src/"; // Using forward slashes
-            $image_name_unique = uniqid('event_', true) . '.' . $image_extension;
+            $upload_dir = "../src/"; // Using forward slashes
+            $image_name_unique = uniqid('gallery_', true) . '.' . $image_extension;
             $image_path = $upload_dir . $image_name_unique;
 
             // Move the uploaded image to the server
             if (move_uploaded_file($image_tmp_name, $image_path)) {
-                // Insert the event into the database along with the image path
-                $insert_query = "INSERT INTO events (title, event_name, event_date, location, description, event_image) VALUES (?, ?, ?, ?, ?, ?)";
+                // Insert the gallery photo details into the database
+                $insert_query = "INSERT INTO gallery (title, description, image_path, section) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($insert_query);
-                $stmt->bind_param("ssssss", $title, $event_name, $event_date, $location, $description, $image_name_unique);
+                $stmt->bind_param("ssss", $title, $description, $image_name_unique, $section);
 
                 if ($stmt->execute()) {
-                    header("Location: manage_events.php");
-                    exit();
+                    $message = "Photo added successfully!";
                 } else {
-                    echo "Error adding event.";
+                    $message = "Error adding photo.";
                 }
                 $stmt->close();
             } else {
-                echo "Error uploading the image.";
+                $message = "Error uploading the image.";
             }
         } else {
-            echo "Invalid image type. Only JPG, JPEG, PNG, and GIF are allowed.";
+            $message = "Invalid image type. Only JPG, JPEG, PNG, and GIF are allowed.";
         }
     } else {
-        // Insert event without an image
-        $insert_query = "INSERT INTO events (title, event_name, event_date, location, description) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($insert_query);
-        $stmt->bind_param("sssss", $title, $event_name, $event_date, $location, $description);
-
-        if ($stmt->execute()) {
-            header("Location: manage_events.php");
-            exit();
-        } else {
-            echo "Error adding event.";
-        }
-        $stmt->close();
+        $message = "Please upload an image.";
     }
 }
 ?>
@@ -73,8 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Event</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Add Photo - Admin</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -88,14 +75,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin: 40px auto;
             padding: 20px;
             background-color: #fff;
-            box-shadow: 0 4px 6px rgb(0, 0, 0);
-            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
 
         h2 {
             text-align: center;
-            color: #333;
             font-size: 24px;
+            color: #333;
             margin-bottom: 20px;
         }
 
@@ -107,9 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         input[type="text"],
-        input[type="date"],
         textarea,
-        input[type="file"] {
+        input[type="file"],
+        select {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -121,9 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         input[type="text"]:focus,
-        input[type="date"]:focus,
         textarea:focus,
-        input[type="file"]:focus {
+        input[type="file"]:focus,
+        select:focus {
             border-color: #007BFF;
             outline: none;
         }
@@ -155,33 +142,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             text-align: center;
             margin-top: 20px;
         }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
     <div class="content">
-        <h2>Add New Event</h2>
+        <h2>Add New Photo</h2>
+
+        <?php if (isset($message)): ?>
+            <div class="message"><?= $message; ?></div>
+        <?php endif; ?>
+
         <form method="POST" enctype="multipart/form-data">
-            <label for="title">Event Title:</label>
+            <label for="title">Photo Title:</label>
             <input type="text" name="title" required>
 
-            <label for="event_name">Event Name:</label>
-            <input type="text" name="event_name" required>
-
-            <label for="event_date">Event Date:</label>
-            <input type="date" name="event_date" required>
-
-            <label for="location">Location:</label>
-            <input type="text" name="location" required>
-
-            <label for="description">Event Description:</label>
+            <label for="description">Description:</label>
             <textarea name="description" required></textarea>
 
-            <label for="event_image">Event Image:</label>
-            <input type="file" name="event_image" accept="image/*">
+            <label for="section">Section:</label>
+            <select name="section" required>
+                <option value="ASSOCIATES">ASSOCIATES</option>
+                <option value="LEADERSHIP">LEADERSHIP</option>
+                <option value="MEMBERS">MEMBERS</option>
+            </select>
 
-            <button type="submit">Add Event</button>
+            <label for="image">Upload Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+
+            <button type="submit">Add Photo</button>
         </form>
+
+        <a href="manage_gallery.php" class="back-btn">Back to Gallery</a>
     </div>
 
 </body>

@@ -2,11 +2,10 @@
 session_start();
 
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: index.php"); // Redirect to login page if not logged in
+    header("Location: index.php");
     exit();
 }
 
-// Example of role check, can be used to restrict access
 if ($_SESSION['role'] !== 'admin') {
     header("Location: index.php");
     exit();
@@ -17,124 +16,189 @@ if ($_SESSION['role'] !== 'admin') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Lighthouse Ministers</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
+            background: url('assets/images/music-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
+            flex-direction: column;
             height: 100vh;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(36, 2, 99, 0.8)); /* Adding dark and blue gradient for a professional vibe */
-            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
         }
 
         .sidebar {
             width: 250px;
-            background-color: #003366; /* Dark blue background */
-            padding-top: 20px;
-            padding-left: 20px;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.15);
+            background-color: #001f3f;
+            color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-100%);
         }
 
         .sidebar h2 {
-            color: #fff;
-            font-size: 24px;
-            margin-bottom: 40px;
+            text-align: center;
+            padding: 20px 10px;
+            font-size: 22px;
+            background-color: #003366;
+            margin: 0;
         }
 
         .sidebar ul {
-            list-style-type: none;
+            list-style: none;
             padding: 0;
         }
 
         .sidebar ul li {
-            margin-bottom: 20px;
+            border-bottom: 1px solid #004080;
         }
 
         .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
             color: #fff;
             text-decoration: none;
-            font-size: 18px;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .sidebar 
-        .logout-btn {
-            display: block;
-            margin: 40px auto;
-            padding: 10px 25px;
-            background-color:rgb(102, 7, 0); /* Dark blue */
-            color: white;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            text-align: center;
-            font-size: 18px;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            transition: background 0.3s;
         }
 
         .sidebar ul li a:hover {
-            background-color: #28a745; /* Green color on hover */
+            background-color: #28a745;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+            width: 20px;
         }
 
         .main-content {
-            margin-left: 250px;
-            padding: 40px;
             flex-grow: 1;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-            max-width: 800px;
-            margin: 0 auto;
-            height: 100%;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
             overflow-y: auto;
+            transition: margin-left 0.3s;
+        }
+
+        .logout-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .logout-btn:hover {
-            background-color: #005cbf; /* Lighter blue on hover */
+            background-color: #a30000;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            background-color: #003366;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                padding-top: 60px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Admin Dashboard</h2>
-        <ul>
-            <li><a href="#" onclick="loadContent('manage_events.php')">Manage Events</a></li>
-            <li><a href="#" onclick="loadContent('manage_gallery.php')">Manage Gallery</a></li>
-            <li><a href="#" onclick="loadContent('manage_applications.php')">Manage Applications</a></li>
-            <li><a href="#" onclick="loadContent('manage_users.php')">Manage Users</a></li>
-            <form action="logout.php" method="POST">
-            <button type="submit" class="logout-btn">Logout</button>
-        </form>
-        </ul>
+    <!-- Mobile Menu Toggle Button -->
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
     </div>
 
-    <!-- Main Content Area -->
-    <div class="main-content" id="main-content">
-        <h1>Welcome to the Admin Dashboard</h1>
-        <p>Select an option from the sidebar to manage content.</p>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <h2>Lighthouse-Admin</h2>
+            <ul>
+                <li><a href="#" onclick="loadContent('manage_events.php')"><i class="fas fa-calendar-alt"></i>Manage Events</a></li>
+                <li><a href="#" onclick="loadContent('manage_gallery.php')"><i class="fas fa-images"></i>Manage Gallery</a></li>
+                <li><a href="#" onclick="loadContent('manage_applications.php')"><i class="fas fa-envelope-open-text"></i>Manage Applications</a></li>
+                <li><a href="#" onclick="loadContent('manage_users.php')"><i class="fas fa-users-cog"></i>Manage Users</a></li>
+                <li><a href="#" onclick="loadContent('reports.php')"><i class="fas fa-chart-line"></i>Reports</a></li>
+                <li><a href="#" onclick="loadContent('settings.php')"><i class="fas fa-cog"></i>Settings</a></li>
+            </ul>
+            <form action="logout.php" method="POST">
+                <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </form>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <h1>Welcome to the Admin Dashboard</h1>
+            <p>Select a section from the sidebar to manage content.</p>
+        </div>
     </div>
 
     <script>
-        // Function to load content dynamically
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('collapsed');
+        }
+
         function loadContent(page) {
             fetch(page)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('main-content').innerHTML = data;
+                .then(res => res.text())
+                .then(html => {
+                    mainContent.innerHTML = html;
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.add('collapsed'); // Auto-hide on mobile
+                    }
                 })
-                .catch(error => {
-                    document.getElementById('main-content').innerHTML = 'Error loading content.';
-                    console.error('Error loading content:', error);
+                .catch(err => {
+                    mainContent.innerHTML = '<p>Error loading content.</p>';
+                    console.error(err);
                 });
         }
     </script>
