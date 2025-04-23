@@ -1,26 +1,21 @@
-# Ignore XAMPP/Windows-specific files
+# OS generated files
+.DS_Store
 Thumbs.db
 Desktop.ini
 
-# Ignore log files and system files
-*.log
-*.env
-
-# Ignore vendor folder if using Composer
-/vendor/
-
-# Ignore node modules if you're using Node.js
-/node_modules/
-
-# Ignore IDE/editor settings
+# IDE/editor settings
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 
-# Ignore OS generated files
-.DS_Store
+# Logs and environment files
+*.log
+*.env
 
-# Ignore uploads or cache
+# Cache and temporary files
+cache/
+*.tmp
+
+# Upload folders (optional — only if you store temporary user uploads)
 uploads/
-.cache/
