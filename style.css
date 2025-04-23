@@ -1,0 +1,12 @@
+body {
+    background: url('/mnt/data/A_login_form_for_managing_events_is_presented_in_t.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
