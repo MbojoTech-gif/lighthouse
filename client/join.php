@@ -19,31 +19,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     // Prepare the statement
-    if ($stmt = $conn->prepare($sql)) {
-        // Bind the parameters
-        $stmt->bind_param("sssssss", $name, $email, $phone, $voicePart, $instruments, $experience, $status);
+    $stmt = $conn->prepare($sql);
 
-        // Execute the query
-        if ($stmt->execute()) {
-            // Set success message and redirect
-            $_SESSION['message'] = "Application submitted successfully!";
-            header("Location: thank_you.php"); // Redirect to the thank-you page
-            exit();
-        } else {
-            // Set error message
-            $_SESSION['error'] = "Error: " . $stmt->error;
-            header("Location: join.php"); // Redirect back to the form
-            exit();
-        }
-
-        // Close the statement
-        $stmt->close();
-    } else {
-        // Handle failure to prepare statement
-        $_SESSION['error'] = "Error: Unable to prepare SQL statement.";
+    // Check if the statement was prepared successfully
+    if ($stmt === false) {
+        $_SESSION['error'] = "Error: " . $conn->error;
         header("Location: join.php"); // Redirect back to the form
         exit();
     }
+
+    // Bind the parameters
+    $stmt->bind_param("sssssss", $name, $email, $phone, $voicePart, $instruments, $experience, $status);
+
+    // Execute the query
+    if ($stmt->execute()) {
+        // Set success message and redirect
+        $_SESSION['message'] = "Application submitted successfully!";
+        header("Location: thank_you.php"); // Redirect to the thank-you page
+        exit();
+    } else {
+        // Set error message
+        $_SESSION['error'] = "Error: " . $stmt->error;
+        header("Location: join.php"); // Redirect back to the form
+        exit();
+    }
+
+    // Close the statement (only if it's successfully created)
+    $stmt->close();
 }
 ?>
 
